@@ -1,8 +1,10 @@
+import styled from "styled-components";
 import { useCRUD } from "./hooks";
 import { Manufacturer, Vehicle } from "./models";
-import { Application, Header } from "./ui"
+import { Application, Header, RoundedLink } from "./ui"
 import { List, RowIterator } from "./ui/List";
 import { NavigationView } from "./ui/NavigationView"
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 
 export const VehiclesPage = () => {
@@ -20,6 +22,12 @@ export const VehiclesPage = () => {
 	const row: RowIterator<Vehicle> = ({item}) => (<tr>
 		<td>{item.model}</td>
 		<td>{(item.manufacturer as Manufacturer)?.name}</td>
+		<td>{item.releaseDate && new Date(item.releaseDate).toLocaleDateString("en-us")}</td>
+		<td>{item.vehicleType?.map((t, i)=><span key={i}></span>)}</td>
+		<td>
+			<RoundedLink $background="rgba(0,0,0,0.2)" $width="2rem" $height="2rem" $radius="1rem"><FaEdit/></RoundedLink>
+			<RoundedLink $background="rgba(255,0,0,1)" $color="#fff" $width="2rem" $height="2rem" $radius="1rem"><FaTrash/></RoundedLink>
+		</td>
 	</tr>);
 
 	return (<Application>
@@ -32,3 +40,6 @@ export const VehiclesPage = () => {
 		</main>
 	</Application>)
 }
+
+const Span = styled.span`
+`

@@ -17,6 +17,9 @@ export const theme = css`
 
 --vip-list-border: 1px solid #000;
 
+--vip-even-table-row: #ccf;
+--vip-odd-table-row: #dde;
+
 @media (prefers-color-scheme: dark) {
 	--vip-background-color: #335;
 	--vip-foreground-color: #fff;
@@ -30,6 +33,9 @@ export const theme = css`
 	--vip-navigation-active-overlay: rgba(255,255,255,0.1);
 
 	--vip-list-border: 1px solid #fff;
+
+	--vip-even-table-row: #557;
+	--vip-odd-table-row: #668;
 }
 
 @media (min-width: 768px){
@@ -39,4 +45,4 @@ export const theme = css`
 }
 `
 
-export const cVar = (name: string, defaultValue: string): string => `var(--vip-${name}, ${defaultValue})`;
+export const cVar = (name: string, defaultValue?: string): string => `var(--vip-${name}, ${defaultValue})`;

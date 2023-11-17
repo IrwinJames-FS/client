@@ -24,4 +24,12 @@ border: var(--vip-list-border);
 td, th{
 	border-left: var(--vip-list-border)
 }
+
+tr:nth-child(odd){
+	background-color: var(--vip-odd-table-row, #dde);
+}
+
+tr:nth-child(even){
+	background-color: var(--vip-even-table-row, #ccf);
+}
 `;

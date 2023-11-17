@@ -5,6 +5,7 @@ export enum VehicleType {
 	hatchback = "Hatchback",
 	luxuryCar = "Luxury Car",
 	minivan = "Minivan",
+	pickupTruck = "Pickup Truck",
 	sedan = "Sedan",
 	stationWagon = "Station Wagon",
 	suv = "SUV",
@@ -18,8 +19,8 @@ export const vehicleTypes: VehicleType[] = [
 	VehicleType.hatchback,
 	VehicleType.luxuryCar,
 	VehicleType.minivan,
+	VehicleType.pickupTruck,
 	VehicleType.sedan,
 	VehicleType.stationWagon,
 	VehicleType.suv,
-	VehicleType.van
 ]

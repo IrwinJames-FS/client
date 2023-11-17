@@ -5,7 +5,7 @@ type VehicleReference = Vehicle | string;
 
 export interface Manufacturer extends Record {
 	name: string,
-	established: string,
-	revenue: number,
-	models: VehicleReference[]
+	established?: Date,
+	revenue?: number,
+	models?: VehicleReference[]
 }
