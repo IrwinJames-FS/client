@@ -1,11 +1,25 @@
+import { ReactNode } from "react";
 import styled from "styled-components";
+import { Flex } from "./Flex";
+import { cVar } from "./theme";
 
-export const Header = styled.header`
-	display: flex;
-	flex-direction: var(--vip-header-direction, column);
-	flex-wrap: nowrap;
+
+export type HeaderProps = {
+	children?: ReactNode
+}
+export const Header = ({children}:HeaderProps) => (
+<StyledHeader as="header"
+	$direction={cVar('header-direction', 'column')}
+	$justify={cVar('header-justify', 'start')}
+	$align={cVar('header-align', 'stretch')}>
+	{children}
+</StyledHeader>);
+
+export const StyledHeader = styled(Flex)`
 	background-color: var(--vip-primary-background-color, #ccf);
-	justify-content: var(--vip-header-justify, start);
-	align-items: var(--vip-header-align, stretch);
 	min-height: 3rem;
+	box-shadow: 0px 0px 8px var(--vip-header-shadow-color, #000);
+	h1{
+		font-size: 1.5rem;
+	}
 `

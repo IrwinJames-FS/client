@@ -1,10 +1,9 @@
 import { Application, Header } from "./ui";
 import { NavigationView } from "./ui/NavigationView";
 
-export const StatisticsPage = () => (<Application>
+export const ManufacturersPage = () => (<Application>
 	<Header>
-		<h1>Statistics</h1>
+		<h1>Manufacturers</h1>
 		<NavigationView/>
 	</Header>
-	
-</Application>);
+</Application>)
