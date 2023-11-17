@@ -19,6 +19,7 @@ export const StyledHeader = styled(Flex)`
 	background-color: var(--vip-primary-background-color, #ccf);
 	min-height: 3rem;
 	box-shadow: 0px 0px 8px var(--vip-header-shadow-color, #000);
+	margin-bottom: 0.5rem;
 	h1{
 		font-size: 1.5rem;
 	}

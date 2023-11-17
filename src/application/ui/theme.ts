@@ -15,7 +15,7 @@ export const theme = css`
 --vip-header-justify: start;
 --vip-header-align: center;
 
-
+--vip-list-border: 1px solid #000;
 
 @media (prefers-color-scheme: dark) {
 	--vip-background-color: #335;
@@ -29,7 +29,7 @@ export const theme = css`
 	--vip-navigation-hover-overlay: rgba(255,255,255,0.2);
 	--vip-navigation-active-overlay: rgba(255,255,255,0.1);
 
-
+	--vip-list-border: 1px solid #fff;
 }
 
 @media (min-width: 768px){
