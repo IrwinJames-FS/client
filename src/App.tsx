@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { StatisticsPage, VehicleEditorPage, VehiclesPage, ManufacturersPage } from "./application";
-import { VehiclesLoader, ManufacturersLoader, VehicleLoader } from "./application/loaders";
+import { StatisticsPage, VehicleEditorPage, VehiclesPage, ManufacturersPage, ManufacturerEditorPage } from "./application";
+import { VehiclesLoader, ManufacturersLoader, VehicleLoader, ManufacturerLoader } from "./application/loaders";
 
 
 const router = createBrowserRouter([
@@ -28,6 +28,16 @@ const router = createBrowserRouter([
     loader: ManufacturersLoader,
     element: <ManufacturersPage/>
   },
+  {
+    path:"/manufacturers/id",
+    loader: ManufacturerLoader,
+    element: <ManufacturerEditorPage/>
+  },
+  {
+    path:"/manufacturers/id/:id",
+    loader: ManufacturerLoader,
+    element: <ManufacturerEditorPage/>
+  }
 ])
 const App = () => (<RouterProvider router={router}/>);
 

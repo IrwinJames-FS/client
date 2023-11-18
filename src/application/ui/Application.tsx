@@ -6,6 +6,10 @@ export const Application = styled.div`
 	color: var(--vip-fg, #000);
 	width: 100vw;
 	height: 100vh;
-	overflow-y:scroll
+	overflow-y:scroll;
+
+	main,header{
+		padding: 0 1rem;
+	}
 	${theme}
 `

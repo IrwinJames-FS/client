@@ -19,7 +19,7 @@ export const List = <T extends Record>({array, header, RowElement}:ListProps<T>)
 </Table>)
 const Table = styled.table`
 width: 100%;
-border: var(--vip-list-border);
+border: 1px solid var(--vip-fg);
 
 td, th{
 	border-left: 1px solid var(--vip-fg);
