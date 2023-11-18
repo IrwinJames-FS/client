@@ -1,4 +1,4 @@
-import { usePopulate } from "./hooks/usePopulate";
+import { usePopulate } from "./hooks";
 import { Application, Flex, Header, RoundedLink } from "./ui";
 import { NavigationView } from "./ui/NavigationView";
 import { FaInfo } from "react-icons/fa";

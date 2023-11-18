@@ -1,16 +1,14 @@
 import styled from "styled-components";
-import { useCRUD } from "./hooks";
 import { Manufacturer, Vehicle } from "./models";
-import { Application, Header, RoundedLink, Flex, CircleLink, CircleButton } from "./ui"
-import { List, RowIterator } from "./ui/List";
-import { NavigationView } from "./ui/NavigationView"
+import { Application, Header, RoundedLink, Flex, CircleLink, CircleButton, NavigationView, List, RowIterator } from "./ui"
+
+
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import { useLoaderData } from "react-router-dom";
 
 
 export const VehiclesPage = () => {
-	const {useRead} = useCRUD<Vehicle>('vehicle');
-	const {result: array, error} = useRead<Vehicle>()
-	
+	const array = useLoaderData() as Vehicle[];
 	const header = (<tr>
 		<th>Model</th>
 		<th>Manufacturer</th>
@@ -19,23 +17,26 @@ export const VehiclesPage = () => {
 		<th></th>
 	</tr>);
 
-	const row: RowIterator<Vehicle> = ({item}) => (<tr>
-		<td>{item.model}</td>
-		<td>{(item.manufacturer as Manufacturer)?.name}</td>
-		<td>{item.releaseDate && new Date(item.releaseDate).toLocaleDateString("en-us")}</td>
-		<td>{item.vehicleType?.map((t, i)=><span key={i}></span>)}</td>
-		<td>
-			<RoundedLink $background="rgba(0,0,0,0.2)" $width="2rem" $height="2rem" $radius="1rem"><FaEdit/></RoundedLink>
-			<RoundedLink $background="rgba(255,0,0,1)" $color="#fff" $width="2rem" $height="2rem" $radius="1rem"><FaTrash/></RoundedLink>
-		</td>
-	</tr>);
+	const row: RowIterator<Vehicle> = ({item}) => {
+		return (<tr>
+			<td>{item.model}</td>
+			<td>{(item.manufacturer as Manufacturer)?.name}</td>
+			<td>{item.releaseDate && new Date(item.releaseDate).toLocaleDateString("en-us")}</td>
+			<td>{item.vehicleType?.map((t, i)=>(<Span key={i}>{t}</Span>))}</td>
+			<td>
+				<CircleLink className="primary" to={`/vehicles/id/${item._id}`}><FaEdit/></CircleLink>
+				<CircleButton className="dangerous"><FaTrash/></CircleButton>
+				
+			</td>
+		</tr>);
+	}
 
 	return (<Application>
 		<Header>
 			<h1>Vehicles</h1>
 			<Flex>
 				<NavigationView/>
-				<CircleButton className="primary"><FaPlus/></CircleButton>
+				<CircleLink to="/vehicles/id" className="primary"><FaPlus/></CircleLink>
 			</Flex>
 		</Header>
 		<main>
@@ -45,4 +46,8 @@ export const VehiclesPage = () => {
 }
 
 const Span = styled.span`
+background-color: var(--vip-bg-1);
+padding: 0 0.5rem;
+border-radius: 1rem;
+margin: 0.25rem;
 `

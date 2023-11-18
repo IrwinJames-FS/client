@@ -21,21 +21,21 @@ const StyledNavigationView = styled.nav<StyledNavigationViewProps>`${({$child}) 
 	height: 2rem;
 	border-radius: 1rem;
 	overflow: hidden;
-	background-color: var(--vip-navigation-background, #000);
+	background-color: var(--vip-bg-1);
 
 	a{
 		text-decoration: none;
 		text-align: center;
 		padding: 0 0.5rem;
 		line-height: 2rem;
-		color: var(--vip-foreground-color, #000);
+		color: var(--vip-fg, #000);
 		
 		&:hover{
-			background: var(--vip-navigation-hover-overlay, #000);
+			background: var(--vip-bg-4, #000);
 		}
 
 		&:nth-child(${$child}):not(:hover){
-			background-color: var(--vip-navigation-active-overlay, #000);
+			background-color: var(--vip-bg-5, #000);
 		}
 	}
 `}`;

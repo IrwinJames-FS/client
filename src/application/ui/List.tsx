@@ -22,14 +22,15 @@ width: 100%;
 border: var(--vip-list-border);
 
 td, th{
-	border-left: var(--vip-list-border)
+	border-left: 1px solid var(--vip-fg);
+	padding: 0 1rem;
 }
 
 tr:nth-child(odd){
-	background-color: var(--vip-odd-table-row, #dde);
+	background-color: var(--vip-bg-3, #dde);
 }
 
 tr:nth-child(even){
-	background-color: var(--vip-even-table-row, #ccf);
+	background-color: var(--vip-bg-2, #ccf);
 }
 `;

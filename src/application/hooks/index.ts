@@ -1,1 +1,1 @@
-export * from './useCRUD';
+export * from "./usePopulate";

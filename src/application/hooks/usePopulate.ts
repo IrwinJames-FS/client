@@ -1,8 +1,7 @@
 import { useState } from "react"
 import { Manufacturer, Vehicle, Record } from "../models";
 import { MOCKDATA } from "../bin/MOCKDATA";
-import { POST } from "../bin/rest";
-import { useCRUD } from "./useCRUD";
+import { CRUD } from "../bin/CRUD";
 
 type PopulateState = {
 	status: 'ready' | 'running' | 'failed',
@@ -10,8 +9,8 @@ type PopulateState = {
 }
 
 export const usePopulate = () => {
-	const {create: createVehicle} = useCRUD<Vehicle>('vehicle');
-	const {create: createManufacturer} = useCRUD<Manufacturer>('manufacturer');
+	const {create: createVehicle} = CRUD<Vehicle>('vehicle');
+	const {create: createManufacturer} = CRUD<Manufacturer>('manufacturer');
 
 	const [populationState, setState] = useState<PopulateState>({status: 'ready', error:undefined})
 	
@@ -19,12 +18,12 @@ export const usePopulate = () => {
 		setState({status:"running"});
 		console.log(JSON.parse(JSON.stringify(MOCKDATA.manufacturers)));
 		try {
-			const manufacturerIds = await popIt(MOCKDATA.manufacturers, item=>createManufacturer(item));
+			const manufacturerIds = await popIt(MOCKDATA.manufacturers, item=>createManufacturer<Manufacturer>(item));
 			console.log(manufacturerIds);
 			await popIt(MOCKDATA.vehicles, item => {
 				const manId = parseInt(item.manufacturer as string);
 				item.manufacturer = manufacturerIds[manId];
-				return createVehicle(item);
+				return createVehicle<Vehicle>(item);
 				
 			});
 			setState({status:"ready"});

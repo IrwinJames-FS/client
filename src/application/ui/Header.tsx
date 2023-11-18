@@ -9,16 +9,16 @@ export type HeaderProps = {
 }
 export const Header = ({children}:HeaderProps) => (
 <StyledHeader as="header"
-	$direction={cVar('header-direction', 'column')}
-	$justify={cVar('header-justify', 'start')}
-	$align={cVar('header-align', 'stretch')}>
+	$direction={cVar('head-dir', 'column')}
+	$justify={cVar('head-justify', 'start')}
+	$align={cVar('head-align', 'stretch')}>
 	{children}
 </StyledHeader>);
 
 export const StyledHeader = styled(Flex)`
-	background-color: var(--vip-primary-background-color, #ccf);
+	background-color: var(--vip-bg-2, #ccf);
 	min-height: 3rem;
-	box-shadow: 0px 0px 8px var(--vip-header-shadow-color, #000);
+	box-shadow: 0px 2px 2px #000;
 	margin-bottom: 0.5rem;
 	h1{
 		font-size: 1.5rem;

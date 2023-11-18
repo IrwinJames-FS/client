@@ -11,13 +11,22 @@ const circlecss = css`
 	height: 2rem;
 	border-radius: 1rem;
 	border:none;
-	color: var(--vip-foreground-color);
-	background-color: var(--vip-navigation-active-overlay, #000);
+	color: var(--vip-fg);
+	background-color: var(--vip-bg-4, #000);
 	&:hover{
-		background-color: var(--vip-navigation-hover-overlay);
+		background-color: var(--vip-bg-5);
 	}
 	&.primary{
-		background-color: var(--vip-primary-background-color);
+		background-color: var(--vip-primary-1);
+		&:hover{
+			background-color: var(--vip-primary-3);
+		}
+	}
+	&.dangerous{
+		background-color: var(--vip-dangerous-1);
+		&:hover{
+			background-color: var(--vip-dangerous-2);
+		}
 	}
 `
 export const CircleLink = styled(Link)`

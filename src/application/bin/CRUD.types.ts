@@ -1,15 +1,10 @@
 import { Record } from "../models"
 
 
-export interface CRUD {
+export interface CRUDLY {
 	create: <T extends Record>(record: T) => Promise<T>,
-	useRead: <T extends Record>() => RequestResult<T[]>,
-	useReadById: <T extends Record>(id:string) => RequestResult<T>,
+	read: <T extends Record>() => Promise<T[]>,
+	readById: <T extends Record>(id:string) => Promise<T>,
 	update: <T extends Record>(record: T) => Promise<T>
 	deleteById: <T extends Record>(id: string) => Promise<T | undefined>
-}
-
-export interface RequestResult<T> {
-	result?: T,
-	error?: unknown
 }

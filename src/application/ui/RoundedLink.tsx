@@ -13,7 +13,7 @@ type RoundedLinkProps = {
 	$padding?: string
 
 }
-export const RoundedLink = styled(Link)<RoundedLinkProps>`${({$radius, $background, $height, $width, $color=cVar('foreground-color', '#000'), $padding="0 0.5rem", $hoverBackgroundColor})=>css`
+export const RoundedLink = styled(Link)<RoundedLinkProps>`${({$radius, $background, $height, $width, $color=cVar('fg', '#000'), $padding="0 0.5rem", $hoverBackgroundColor})=>css`
 	appearance: none;
 	display:inline-flex;
 	flex-flow: column nowrap;

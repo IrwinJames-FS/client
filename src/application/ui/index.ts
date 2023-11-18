@@ -4,3 +4,5 @@ export * from "./Flex";
 export * from "./RoundedLink";
 export * from "./List";
 export * from "./CircleLink";
+export * from "./NavigationView";
+export * from "./Input";
