@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { useCRUD } from "./hooks";
 import { Manufacturer, Vehicle } from "./models";
-import { Application, Header, RoundedLink, Flex } from "./ui"
+import { Application, Header, RoundedLink, Flex, CircleLink, CircleButton } from "./ui"
 import { List, RowIterator } from "./ui/List";
 import { NavigationView } from "./ui/NavigationView"
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 
 
 export const VehiclesPage = () => {
@@ -35,7 +35,7 @@ export const VehiclesPage = () => {
 			<h1>Vehicles</h1>
 			<Flex>
 				<NavigationView/>
-				
+				<CircleButton className="primary"><FaPlus/></CircleButton>
 			</Flex>
 		</Header>
 		<main>

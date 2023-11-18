@@ -1,6 +1,7 @@
 import { css } from "styled-components";
 
 export const theme = css`
+/*
 --vip-background-color: #eef;
 --vip-foreground-color: #000;
 
@@ -19,12 +20,16 @@ export const theme = css`
 
 --vip-even-table-row: #ccf;
 --vip-odd-table-row: #dde;
+*/
+
 
 @media (prefers-color-scheme: dark) {
+	/*
 	--vip-background-color: #335;
 	--vip-foreground-color: #fff;
 
 	--vip-primary-background-color: #557;
+	--vip-primary-hover-background-color: #557
 
 	--vip-navigation-hover-overlay: rgba(0,0,0,0.2);
 
@@ -36,12 +41,15 @@ export const theme = css`
 
 	--vip-even-table-row: #557;
 	--vip-odd-table-row: #668;
+	*/
 }
 
 @media (min-width: 768px){
+	/*
 	--vip-header-direction: row;
 	--vip-header-justify: space-between;
 	--vip-header-align: center;
+	*/
 }
 `
 
