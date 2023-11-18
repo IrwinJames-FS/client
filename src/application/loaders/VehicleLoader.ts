@@ -1,16 +1,17 @@
 import { LoaderFunction, useParams } from "react-router-dom";
 import { CRUD } from "../bin/CRUD";
 import { Manufacturer, Vehicle, Record } from "../models"
+import { DeleteMethod, UpdateMethod } from "../bin/CRUD.types";
 const {create, read, readById, update, deleteById} = CRUD<Vehicle>('vehicle');
 const {read: readManufacturers} = CRUD<Manufacturer>('manufacturer');
 
-export const VehiclesLoader = async (): Promise<Vehicle[]> => {
-	const vehicles = await read<Vehicle>();
-	return vehicles;
+export const VehiclesLoader = async (): Promise<{vehicles:Vehicle[], deleteById: DeleteMethod<Vehicle>}> => {
+	const vehicles = await read();
+	return {vehicles, deleteById};
 }
 
-export const VehicleLoader: LoaderFunction = async ({params}): Promise<{vehicle:Vehicle, manufacturers: Manufacturer[], update: <T extends Record>(record: T)=>Promise<T>}> => {
-	const manufacturers = await readManufacturers<Manufacturer>();
+export const VehicleLoader: LoaderFunction = async ({params}): Promise<{vehicle:Vehicle, manufacturers: Manufacturer[], update: UpdateMethod<Vehicle>, deleteById: DeleteMethod<Vehicle>}> => {
+	const manufacturers = await readManufacturers();
 
 	const { id } = params;
 	if(!id) return { 
@@ -22,9 +23,10 @@ export const VehicleLoader: LoaderFunction = async ({params}): Promise<{vehicle:
 			manufacturer: ""
 		},
 		manufacturers,
-		update:create
+		update:create,
+		deleteById
 	};
-	const vehicle = await readById<Vehicle>(id);
+	const vehicle = await readById(id);
 	vehicle.manufacturer = (vehicle.manufacturer as Manufacturer)._id;
-	return {vehicle, manufacturers, update};
+	return {vehicle, manufacturers, update, deleteById};
 };

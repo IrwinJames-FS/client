@@ -18,12 +18,12 @@ export const usePopulate = () => {
 		setState({status:"running"});
 		console.log(JSON.parse(JSON.stringify(MOCKDATA.manufacturers)));
 		try {
-			const manufacturerIds = await popIt(MOCKDATA.manufacturers, item=>createManufacturer<Manufacturer>(item));
+			const manufacturerIds = await popIt(MOCKDATA.manufacturers, item=>createManufacturer(item));
 			console.log(manufacturerIds);
 			await popIt(MOCKDATA.vehicles, item => {
 				const manId = parseInt(item.manufacturer as string);
 				item.manufacturer = manufacturerIds[manId];
-				return createVehicle<Vehicle>(item);
+				return createVehicle(item);
 				
 			});
 			setState({status:"ready"});

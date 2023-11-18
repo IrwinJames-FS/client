@@ -13,7 +13,13 @@ export const theme = css`
 --vip-primary-2: rgba(118, 190, 245);
 --vip-primary-3: rgba(108, 180, 235);
 
+--vip-success-1: rgba(130, 255, 130);
+--vip-success-2: rgba(120, 245, 120);
+--vip-success-3: rgba(110, 235, 110);
+
 --vip-dangerous-1: rgba(255, 100, 100);
+--vip-dangerous-2: rgba(235, 80, 80);
+--vip-dangerous-3: rgba(215, 60, 60);
 --vip-fg: #000;
 
 
@@ -36,6 +42,7 @@ export const theme = css`
 
 	--vip-dangerous-1: rgba(200, 50, 50);
 	--vip-dangerous-2: rgba(220, 70, 70);
+	--vip-dangerous-3: rgba(240, 90, 90);
 }
 
 @media (min-width: 768px){

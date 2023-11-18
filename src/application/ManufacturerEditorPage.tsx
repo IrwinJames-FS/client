@@ -1,13 +1,24 @@
+import { MouseEvent } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom"
-import { Application, Header, Input, Flex, Select, CircleLink, CircleButton } from "./ui";
+import { Application, Header, Input, Flex, Select, CircleLink, CircleButton, ToastType } from "./ui";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Manufacturer, Vehicle, Record } from "./models";
 import { FaSave, FaTimes, FaTrash } from "react-icons/fa";
+import { DeleteMethod, UpdateMethod } from "./bin/CRUD.types";
+import { useToast } from "./hooks/useToast";
 
 
 export const ManufacturerEditorPage = () => {
 	
-	const {manufacturer:m, update} = useLoaderData() as {manufacturer: Manufacturer, update: (record: Manufacturer)=>Promise<Manufacturer>}
+	const {manufacturer:m, update, deleteById} = useLoaderData() as {manufacturer: Manufacturer, update: UpdateMethod<Manufacturer>, deleteById:DeleteMethod<Manufacturer>}
+	const [toast, presentToast] = useToast();
+	const deleteToast = async (event: MouseEvent<HTMLButtonElement>) => {
+		const id = event.currentTarget.getAttribute('data-id')!;
+		const confirmed = await presentToast(ToastType.dangerous, (<p>This will permanently delete this manufacturer and any related vehicles. Are you sure?</p>));
+		if (!confirmed) return;
+		await deleteById(id);
+		navigate('/manufacturers');
+	}
 	const navigate = useNavigate();
 	const [manufacturer, setManufacturer] = useState<Manufacturer>(m);
 	const onSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -29,7 +40,7 @@ export const ManufacturerEditorPage = () => {
 			<h1>Editor</h1>
 			<Flex>
 				<CircleLink to="/manufacturers"><FaTimes/></CircleLink>
-				{manufacturer._id.length && <CircleButton className="dangerous"><FaTrash/></CircleButton>}
+				{manufacturer._id.length && <CircleButton className="dangerous" data-id={manufacturer._id} onClick={deleteToast}><FaTrash/></CircleButton>}
 				<CircleButton className="primary" form="manufacturer-form"><FaSave/></CircleButton>
 			</Flex>
 		</Header>
@@ -39,6 +50,7 @@ export const ManufacturerEditorPage = () => {
 				<Input lbl="Established" type="date" value={manufacturer.established ? new Date(manufacturer.established).toISOString().split('T')[0]:""} onChange={updateEstablished} required/>
 				<Input lbl="Revenue" value={manufacturer.revenue} onChange={updateRevenue} required/>
 			</Flex>
+			{toast}
 		</main>
 	</Application>);
 }

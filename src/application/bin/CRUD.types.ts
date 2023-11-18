@@ -1,10 +1,16 @@
 import { Record } from "../models"
 
 
-export interface CRUDLY {
-	create: <T extends Record>(record: T) => Promise<T>,
-	read: <T extends Record>() => Promise<T[]>,
-	readById: <T extends Record>(id:string) => Promise<T>,
-	update: <T extends Record>(record: T) => Promise<T>
-	deleteById: <T extends Record>(id: string) => Promise<T | undefined>
+export interface CRUDLY<T extends Record> {
+	create: UpdateMethod<T>
+	read: ReadMethod<T>
+	readById: ReadByIDMethod<T>
+	update: UpdateMethod<T>
+	deleteById: DeleteMethod<T>
 }
+
+
+export type ReadMethod<T extends Record> = () => Promise<T[]>
+export type ReadByIDMethod<T extends Record> = (id: string) => Promise<T>
+export type UpdateMethod<T extends Record> = (record: T) => Promise<T>
+export type DeleteMethod<T extends Record> = (id: string) => Promise<T | undefined> 

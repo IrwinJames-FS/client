@@ -1,14 +1,25 @@
+import { MouseEvent } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom"
-import { Application, Header, Input, Flex, Select, CircleLink, CircleButton } from "./ui";
+import { Application, Header, Input, Flex, Select, CircleLink, CircleButton, ToastType } from "./ui";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Manufacturer, Vehicle, Record } from "./models";
-import { VehicleType, vehicleTypes } from "./models/vehicleTypes";
+import { vehicleTypes } from "./models/vehicleTypes";
 import { FaSave, FaTimes, FaTrash } from "react-icons/fa";
+import { DeleteMethod, UpdateMethod } from "./bin/CRUD.types";
+import { useToast } from "./hooks/useToast";
 
 
 export const VehicleEditorPage = () => {
 	
-	const {vehicle:v, manufacturers, update} = useLoaderData() as {vehicle: Vehicle, manufacturers: Manufacturer[], update: <T extends Record>(record: T)=>Promise<T>}
+	const {vehicle:v, manufacturers, update, deleteById} = useLoaderData() as {vehicle: Vehicle, manufacturers: Manufacturer[], update: UpdateMethod<Vehicle>, deleteById: DeleteMethod<Vehicle>}
+	const [toast, presentToast] = useToast();
+	const deleteToast = async (event: MouseEvent<HTMLButtonElement>) => {
+		const id = event.currentTarget.getAttribute('data-id')!;
+		const confirmed = await presentToast(ToastType.dangerous, (<p>This will permanently delete this vehicle. Are you sure?</p>));
+		if (!confirmed) return;
+		await deleteById(id);
+		navigate('/vehicles');
+	}
 	const navigate = useNavigate();
 	const [vehicle, setVehicle] = useState<Vehicle>(v);
 	const onSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -31,7 +42,7 @@ export const VehicleEditorPage = () => {
 			<h1>Editor</h1>
 			<Flex>
 				<CircleLink to="/vehicles"><FaTimes/></CircleLink>
-				{vehicle._id.length && <CircleButton className="dangerous"><FaTrash/></CircleButton>}
+				{vehicle._id.length && <CircleButton className="dangerous" data-id={vehicle._id} onClick={deleteToast}><FaTrash/></CircleButton>}
 				<CircleButton className="primary" form="vehicle-form"><FaSave/></CircleButton>
 			</Flex>
 		</Header>
@@ -46,6 +57,7 @@ export const VehicleEditorPage = () => {
 					{manufacturers.map(m=>(<option key={m._id} value={m._id}>{m.name}</option>))}
 				</Select>
 			</Flex>
+			{toast}
 		</main>
 	</Application>);
 }

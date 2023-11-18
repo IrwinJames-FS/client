@@ -1,14 +1,27 @@
 import styled from "styled-components";
-import { Manufacturer, Vehicle } from "./models";
-import { Application, Header, RoundedLink, Flex, CircleLink, CircleButton, NavigationView, List, RowIterator } from "./ui"
+import { Manufacturer, Vehicle, Record } from "./models";
+import { Application, Header, Flex, CircleLink, CircleButton, NavigationView, List, RowIterator, RoundedButton, ToastType } from "./ui"
 
 
-import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
-import { useLoaderData } from "react-router-dom";
+import { FaEdit, FaTrash, FaPlus, FaTimes, FaCheck } from "react-icons/fa";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { MouseEvent, useState } from "react";
+import { useToast } from "./hooks/useToast";
 
 
 export const VehiclesPage = () => {
-	const array = useLoaderData() as Vehicle[];
+	const navigate = useNavigate();
+	const {vehicles:array, deleteById} = useLoaderData() as {vehicles:Vehicle[], deleteById: <T extends Record>(id: String)=>Promise<T | undefined>};
+	const [toast, presentToast] = useToast();
+	const deleteToast = async (event: MouseEvent<HTMLButtonElement>) => {
+		const id = event.currentTarget.getAttribute('data-id')!;
+		const confirmed = await presentToast(ToastType.dangerous, (<p>This will permanently delete this vehicle. Are you sure?</p>));
+		if (!confirmed) return;
+		await deleteById(id);
+		navigate('/vehicles');
+	}
+	
+	
 	const header = (<tr>
 		<th>Model</th>
 		<th>Manufacturer</th>
@@ -25,8 +38,7 @@ export const VehiclesPage = () => {
 			<td>{item.vehicleType?.map((t, i)=>(<Span key={i}>{t}</Span>))}</td>
 			<td>
 				<CircleLink className="primary" to={`/vehicles/id/${item._id}`}><FaEdit/></CircleLink>
-				<CircleButton className="dangerous"><FaTrash/></CircleButton>
-				
+				<CircleButton className="dangerous" data-id={item._id} onClick={deleteToast}><FaTrash/></CircleButton>
 			</td>
 		</tr>);
 	}
@@ -41,6 +53,7 @@ export const VehiclesPage = () => {
 		</Header>
 		<main>
 			{array && <List {...{array, header, RowElement:row}}/>}
+			{toast}
 		</main>
 	</Application>)
 }
@@ -50,4 +63,4 @@ background-color: var(--vip-bg-1);
 padding: 0 0.5rem;
 border-radius: 1rem;
 margin: 0.25rem;
-`
+`;

@@ -1,14 +1,26 @@
-import { Application, CircleLink, Flex, Header, List, RoundedLink, CircleButton } from "./ui";
+import { MouseEvent } from "react";
+import { Application, CircleLink, Flex, Header, List, RoundedLink, CircleButton, ToastType } from "./ui";
 import { NavigationView } from "./ui/NavigationView";
-import { Manufacturer, Vehicle } from "./models";
+import { Manufacturer, Vehicle, Record } from "./models";
 import { RowIterator } from "./ui/List";
 import { cVar } from "./ui/theme";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import { useToast } from "./hooks/useToast";
+import { DeleteMethod } from "./bin/CRUD.types";
 
 export const ManufacturersPage = () => {
-	
-	const array = useLoaderData() as Manufacturer[];
+	const navigate = useNavigate();
+	const {manufacturers:array, deleteById} = useLoaderData() as {manufacturers:Manufacturer[], deleteById:DeleteMethod<Manufacturer>};
+
+	const [toast, presentToast] = useToast();
+	const deleteToast = async (event: MouseEvent<HTMLButtonElement>) => {
+		const id = event.currentTarget.getAttribute('data-id')!;
+		const confirmed = await presentToast(ToastType.dangerous, (<p>This will permanently delete this manufacturer and any related vehicles. Are you sure?</p>));
+		if (!confirmed) return;
+		await deleteById(id);
+		navigate('/manufacturers');
+	}
 
 	const header = (<tr>
 		<th>Name</th>
@@ -22,10 +34,10 @@ export const ManufacturersPage = () => {
 		<td>{item.name}</td>
 		<td>{item.established && new Date(item.established).toLocaleDateString("en-us")}</td>
 		<td>{item.revenue && item.revenue.toLocaleString("en-us", {style:"currency", currency:"USD"})}</td>
-		<td>{(item.models as Vehicle[])?.map(model => <RoundedLink key={model._id} $background={cVar('navigation-background')} $radius="0.75rem" $height="1.5rem">{model.model}</RoundedLink>)}</td>
+		<td>{(item.models as Vehicle[])?.map(model => <RoundedLink key={model._id} to={`/vehicles/id/${model._id}`} $background={cVar('bg-1')} $hoverBackgroundColor={cVar('bg-4')} $radius="0.75rem" $height="1.5rem">{model.model}</RoundedLink>)}</td>
 		<td>
 			<CircleLink className="primary" to={`/manufacturers/id/${item._id}`}><FaEdit/></CircleLink>
-			<CircleButton className="dangerous"><FaTrash/></CircleButton>
+			<CircleButton className="dangerous" data-id={item._id} onClick={deleteToast}><FaTrash/></CircleButton>
 		</td>
 	</tr>);
 
@@ -38,6 +50,10 @@ export const ManufacturersPage = () => {
 			</Flex>
 			
 		</Header>
-		{array && <List {...{array, header, RowElement: row}}/>}
+		<main>
+			{array && <List {...{array, header, RowElement: row}}/>}
+			{toast}
+		</main>
+		
 	</Application>);
 }

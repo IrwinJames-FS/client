@@ -1,13 +1,14 @@
 import { LoaderFunction } from "react-router-dom";
 import { CRUD } from "../bin/CRUD";
 import { Manufacturer } from "../models"
+import { DeleteMethod, UpdateMethod } from "../bin/CRUD.types";
 const {create, read, readById, update, deleteById} = CRUD<Manufacturer>('manufacturer');
-export const ManufacturersLoader = async () => {
-	const manufacturers = await read<Manufacturer>();
-	return manufacturers;
+export const ManufacturersLoader = async ():Promise<{manufacturers: Manufacturer[], deleteById: DeleteMethod<Manufacturer>}> => {
+	const manufacturers = await read();
+	return {manufacturers, deleteById};
 }
 
-export const ManufacturerLoader:LoaderFunction = async ({params}): Promise<{manufacturer:Manufacturer, update: (record: Manufacturer)=>Promise<Manufacturer>}> => {
+export const ManufacturerLoader:LoaderFunction = async ({params}): Promise<{manufacturer:Manufacturer, update: UpdateMethod<Manufacturer>, deleteById: DeleteMethod<Manufacturer>}> => {
 	const { id } = params;
 	if(!id) return { 
 		manufacturer:{
@@ -16,8 +17,9 @@ export const ManufacturerLoader:LoaderFunction = async ({params}): Promise<{manu
 			established: new Date(),
 			revenue:0
 		},
-		update:create
+		update:create,
+		deleteById
 	};
-	const manufacturer = await readById<Manufacturer>(id);
-	return {manufacturer, update};
+	const manufacturer = await readById(id);
+	return {manufacturer, update, deleteById};
 };
