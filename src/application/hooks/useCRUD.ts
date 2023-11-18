@@ -18,7 +18,11 @@ export const useCRUD = <T extends Record>(collection: string) : CRUD => {
 
 		return state;
 	}
-	const create = <T extends Record>(record: T) => POST<T>(BASE_URL, record);
+	const create = <T extends Record>(record: T) => {
+		const {_id, ...rec} = record;
+		console.log(rec);
+		return POST<T>(BASE_URL, JSON.parse(JSON.stringify(rec)));
+	};
 	const useRead = <T extends Record>(): RequestResult<T[]> => useAxios<T[]>(GET<T[]>(BASE_URL));
 	const useReadById = <T extends Record>(id: string): RequestResult<T> => useAxios<T>(GET(`${BASE_URL}/id/${id}`));
 	const update = <T extends Record>(record: T) => PUT<T>(`${BASE_URL}/id/${record._id}`, record);

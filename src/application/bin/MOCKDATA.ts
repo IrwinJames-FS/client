@@ -16,7 +16,7 @@ export const MOCKDATA:MockData = {
 		{
 			_id:"",
 			name:"Chrysler",
-			established: new Date("1925-07-6T04:00:00.000Z"),
+			established: new Date("1925-07-06T04:00:00.000Z"),
 			revenue:6000000000
 		},
 		{

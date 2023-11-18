@@ -1,17 +1,52 @@
 import { useState } from "react"
-import { Manufacturer, Vehicle } from "../models";
+import { Manufacturer, Vehicle, Record } from "../models";
 import { MOCKDATA } from "../bin/MOCKDATA";
+import { POST } from "../bin/rest";
+import { useCRUD } from "./useCRUD";
 
 type PopulateState = {
 	status: 'ready' | 'running' | 'failed',
-	error?: Error
+	error?: unknown
 }
 
 export const usePopulate = () => {
-	
+	const {create: createVehicle} = useCRUD<Vehicle>('vehicle');
+	const {create: createManufacturer} = useCRUD<Manufacturer>('manufacturer');
+
 	const [populationState, setState] = useState<PopulateState>({status: 'ready', error:undefined})
-	const populate = () => {
-		console.log("Time to start populating");
+	
+	const populate = async () => {
+		setState({status:"running"});
+		console.log(JSON.parse(JSON.stringify(MOCKDATA.manufacturers)));
+		try {
+			const manufacturerIds = await popIt(MOCKDATA.manufacturers, item=>createManufacturer(item));
+			console.log(manufacturerIds);
+			await popIt(MOCKDATA.vehicles, item => {
+				const manId = parseInt(item.manufacturer as string);
+				item.manufacturer = manufacturerIds[manId];
+				return createVehicle(item);
+				
+			});
+			setState({status:"ready"});
+		} catch(error){
+			setState({status: "failed", error});
+		}
 	}
+
+	const popIt = <T extends Record>(array: T[], iteration: (item:T) => Promise<T>): Promise<string[]> => new Promise<string[]>((resolve, reject) => {
+		let ids: string[] = [];
+		if(array.length === 0) return resolve(ids);
+		const item = array.shift()!;
+		return iteration(item)
+		.then(result => {
+			ids.push(result._id);
+			return popIt(array, iteration)
+			.then(newIds => {
+				ids.push(...newIds)
+				return resolve(ids);
+			});
+		});
+	});
+
 	return {populationState, populate};
 }
