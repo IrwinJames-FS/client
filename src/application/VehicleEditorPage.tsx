@@ -49,7 +49,7 @@ export const VehicleEditorPage = () => {
 			<h1>Editor</h1>
 			<Flex>
 				<CircleLink to="/vehicles"><FaTimes/></CircleLink>
-				{vehicle._id.length && <CircleButton className="dangerous" data-id={vehicle._id} onClick={deleteToast}><FaTrash/></CircleButton>}
+				{vehicle._id.length > 0 && <CircleButton className="dangerous" data-id={vehicle._id} onClick={deleteToast}><FaTrash/></CircleButton>}
 				<CircleButton className="primary" form="vehicle-form"><FaSave/></CircleButton>
 			</Flex>
 		</Header>

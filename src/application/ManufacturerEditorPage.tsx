@@ -46,7 +46,7 @@ export const ManufacturerEditorPage = () => {
 			<h1>Editor</h1>
 			<Flex>
 				<CircleLink to="/manufacturers"><FaTimes/></CircleLink>
-				{manufacturer._id.length && <CircleButton className="dangerous" data-id={manufacturer._id} onClick={deleteToast}><FaTrash/></CircleButton>}
+				{manufacturer._id.length > 0 && <CircleButton className="dangerous" data-id={manufacturer._id} onClick={deleteToast}><FaTrash/></CircleButton>}
 				<CircleButton className="primary" form="manufacturer-form"><FaSave/></CircleButton>
 			</Flex>
 		</Header>
