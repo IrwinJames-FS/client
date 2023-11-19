@@ -7,6 +7,7 @@ import { vehicleTypes } from "./models/vehicleTypes";
 import { FaSave, FaTimes, FaTrash } from "react-icons/fa";
 import { DeleteMethod, UpdateMethod } from "./bin/CRUD.types";
 import { useToast } from "./hooks/useToast";
+import { WAIT } from "./bin/rest";
 
 
 export const VehicleEditorPage = () => {
@@ -18,6 +19,12 @@ export const VehicleEditorPage = () => {
 		const confirmed = await presentToast(ToastType.dangerous, (<p>This will permanently delete this vehicle. Are you sure?</p>));
 		if (!confirmed) return;
 		await deleteById(id);
+		await WAIT(1e3);
+		confirmSaveToast();
+	}
+	const confirmSaveToast = async () => {
+		await presentToast(ToastType.success, (<p>Vehicle Deleted!</p>), 1e4);
+		await WAIT(1e3);
 		navigate('/vehicles');
 	}
 	const navigate = useNavigate();

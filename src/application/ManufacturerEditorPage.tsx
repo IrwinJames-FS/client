@@ -6,6 +6,7 @@ import { Manufacturer, Vehicle, Record } from "./models";
 import { FaSave, FaTimes, FaTrash } from "react-icons/fa";
 import { DeleteMethod, UpdateMethod } from "./bin/CRUD.types";
 import { useToast } from "./hooks/useToast";
+import { WAIT } from "./bin/rest";
 
 
 export const ManufacturerEditorPage = () => {
@@ -17,6 +18,12 @@ export const ManufacturerEditorPage = () => {
 		const confirmed = await presentToast(ToastType.dangerous, (<p>This will permanently delete this manufacturer and any related vehicles. Are you sure?</p>));
 		if (!confirmed) return;
 		await deleteById(id);
+		await WAIT(1e3);
+		confirmSaveToast()
+	}
+	const confirmSaveToast = async () => {
+		await presentToast(ToastType.success, (<p>Manufacturers Deleted!</p>), 1e4);
+		await WAIT(1e3);
 		navigate('/manufacturers');
 	}
 	const navigate = useNavigate();
@@ -34,7 +41,6 @@ export const ManufacturerEditorPage = () => {
 	const updateName = (event: ChangeEvent<HTMLInputElement>) => setManufacturer({...manufacturer, name: event.target.value});
 	const updateEstablished = (event: ChangeEvent<HTMLInputElement>) => setManufacturer({...manufacturer, established: new Date(event.target.value)});
 	const updateRevenue = (event: ChangeEvent<HTMLInputElement>) => setManufacturer({...manufacturer, revenue: event.target.value.length > 0 ? parseFloat(event.target.value.replace(/\$/g, '')) : 0});
-	console.log(manufacturer);
 	return (<Application>
 		<Header>
 			<h1>Editor</h1>

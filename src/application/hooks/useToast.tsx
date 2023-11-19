@@ -3,9 +3,10 @@ import { RoundedButton, RoundedButtonProps, Toast, ToastProps, ToastType } from 
 import { FaCheck, FaTimes } from "react-icons/fa";
 
 type Resolver = (value: boolean) => void
-export const useToast = ():[ReactNode, (type:ToastType, children?:ReactNode)=>Promise<boolean>, (value:boolean)=>void] => {
+export const useToast = ():[ReactNode, (type:ToastType, children?:ReactNode, duration?: number)=>Promise<boolean>, (value:boolean)=>void] => {
 	const [state, setState] = useState<ToastProps>({active:false, type: ToastType.primary});
 	let resolver: Resolver | undefined;
+	let timeoutID: number = -1;
 	const btnProps: RoundedButtonProps = {
 		$direction: 'row',
 		$gap: '0.5rem',
@@ -34,7 +35,7 @@ export const useToast = ():[ReactNode, (type:ToastType, children?:ReactNode)=>Pr
 				return DangerousActionPanel;
 		}
 	}
-	const present = (type: ToastType = ToastType.primary, children?: ReactNode) => new Promise<boolean>(resolve => {
+	const present = (type: ToastType = ToastType.primary, children?: ReactNode, duration: number = -1) => new Promise<boolean>(resolve => {
 		setState({active: true, type, children: (<>
 		<div>
 			{children}
@@ -42,11 +43,18 @@ export const useToast = ():[ReactNode, (type:ToastType, children?:ReactNode)=>Pr
 		{actionPanel(type)}
 		</>)});
 		resolver = resolve;
+		if (~duration) {
+			if(~timeoutID){
+				window.clearTimeout(timeoutID);
+				timeoutID = -1;
+			}
+			timeoutID = window.setTimeout(()=>dismiss(true), duration);
+		}
 	})
 	.then(result => {
-		setState({active: false});
+		setState({type, children, active: false});
 		return result;
-	})
+	});
 	const dismiss = (value: boolean) => {
 		if(resolver) resolver(value);
 	}

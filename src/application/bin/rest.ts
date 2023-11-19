@@ -35,3 +35,5 @@ export const PUT = <T>(url: string, record: any) => axios.put<T>(url, record).th
  * @returns {Promise<T>}
  */
 export const DELETE =  <T>(url: string) => axios.delete<T>(url).then(r=>r.data);
+
+export const WAIT = async (duration: number) => new Promise(resolve => window.setTimeout(resolve, duration));

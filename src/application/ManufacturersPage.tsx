@@ -8,6 +8,7 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { useToast } from "./hooks/useToast";
 import { DeleteMethod } from "./bin/CRUD.types";
+import { WAIT } from "./bin/rest";
 
 export const ManufacturersPage = () => {
 	const navigate = useNavigate();
@@ -19,9 +20,14 @@ export const ManufacturersPage = () => {
 		const confirmed = await presentToast(ToastType.dangerous, (<p>This will permanently delete this manufacturer and any related vehicles. Are you sure?</p>));
 		if (!confirmed) return;
 		await deleteById(id);
+		await WAIT(1e3);
+		confirmSaveToast()
+	}
+	const confirmSaveToast = async () => {
+		await presentToast(ToastType.success, (<p>Manufacturer Deleted!</p>), 1e4);
+		await WAIT(1e3);
 		navigate('/manufacturers');
 	}
-
 	const header = (<tr>
 		<th>Name</th>
 		<th>Established</th>
